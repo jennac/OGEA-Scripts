@@ -1,0 +1,6 @@
+This is a script to scrape all the links from the OGEA site and test their validity. 
+It will store all broken links to a csv file, which will then be emailed to some user. 
+
+Before using:
+Change the sender email and password in the emailReport function and the FROM field in main. 
+Change the email in the TO field in main to whoever should receive the report.
