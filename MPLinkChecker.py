@@ -8,11 +8,13 @@ from email.MIMEMultipart import MIMEMultipart
 from email.MIMEBase import MIMEBase
 from email import Encoders
 from multiprocessing import Pool
+import config
 import multiprocessing
 import requests
 import smtplib
 import datetime
 import csv
+
 
 def makeSoup(url):
     r = requests.get(url, auth=('user', 'pass'))
@@ -95,11 +97,11 @@ def emailReport(SUBJECT, FROM, TO, file_name):
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.ehlo()
     server.starttls()
-    server.login('email@sample.com', 'password') #add email/password where the report will be sent from
+    server.login(config.sender_email, config.sender_pw)
     server.sendmail(FROM, TO, report.as_string())
     server.quit()
 
-root_url = 'http://elections.neworganizing.com/en/guide/'
+root_url = config.url
 ogea_soup = makeSoup(root_url)
 states = addStates()
 broken_links = []
@@ -114,8 +116,8 @@ if __name__ == '__main__':
     
     writeFails(broken_links)
     SUBJECT = 'OGEA Broken Links Update {}'.format(datetime.datetime.now())
-    FROM = 'email@sample.com' #edit to match emailReport()
-    TO = 'admin@sample.com' #edit to whoever should receive the report
+    FROM = config.sender_email 
+    TO = config.to_email 
     emailReport(SUBJECT, FROM, TO, 'BrokenLinks.csv')
     end = datetime.datetime.now()
     total = end-start
