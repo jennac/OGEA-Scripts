@@ -7,3 +7,4 @@ sender_email
 sender_pw
 to_email (who will recieve the report)
 url (root url)
+
